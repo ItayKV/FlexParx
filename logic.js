@@ -49,16 +49,50 @@ function renderCars(step) {
   });
 }
 
+// FLIP animation: measure car positions before the layout-affecting mutation,
+// run the mutation, then measure again and animate from the old position to
+// the new one via transform (CSS transitions can't smoothly animate the
+// discrete properties - order/align-self/flex-direction - driving the move).
+function withCarPositionAnimation(mutate) {
+  const cars = Array.from(document.querySelectorAll("#road-cars .car"));
+  const firstRects = cars.map((car) => car.getBoundingClientRect());
+
+  mutate();
+
+  cars.forEach((car, i) => {
+    const first = firstRects[i];
+    const last = car.getBoundingClientRect();
+    const dx = first.left - last.left;
+    const dy = first.top - last.top;
+
+    if (dx || dy) {
+      car.style.transition = "none";
+      car.style.transform = `translate(${dx}px, ${dy}px)`;
+
+      requestAnimationFrame(() => {
+        car.style.transition = "";
+        car.style.transform = "";
+      });
+    }
+  });
+}
+
 function handleContainerPropsInput(event) {
-  const carsLayer = document.getElementById("road-cars");
-  carsLayer.style.cssText = "";
-  applyProps(carsLayer, parseCssDeclarations(event.target.value));
+  const props = parseCssDeclarations(event.target.value);
+  withCarPositionAnimation(() => {
+    const carsLayer = document.getElementById("road-cars");
+    carsLayer.style.cssText = "";
+    applyProps(carsLayer, props);
+  });
 }
 
 function handleCarPropsInput(event) {
   const props = parseCssDeclarations(event.target.value);
-  document.querySelectorAll("#road-cars .car").forEach((car) => {
-    applyProps(car, props);
+  withCarPositionAnimation(() => {
+    document.querySelectorAll("#road-cars .car").forEach((car) => {
+      car.style.cssText = "";
+      applyProps(car, props);
+    });
   });
 }
 

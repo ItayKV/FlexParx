@@ -53,6 +53,7 @@
   width: 100px;
   height: 100px;
   margin: 28px;
+  transition: transform 0.3s ease;
 }
 
 .parking-spot {
