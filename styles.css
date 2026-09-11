@@ -54,7 +54,7 @@ body {
   min-height: 0;
 }
 
-.panel {
+.flex-editor {
   flex: 0 0 320px;
   display: flex;
   flex-direction: column;
@@ -65,18 +65,18 @@ body {
   padding: 2rem;
 }
 
-.panel__section {
+.flex-editor__field {
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
 }
 
-.panel__label {
+.flex-editor__label {
   font-weight: 600;
   color: var(--green-dark);
 }
 
-.panel__textarea {
+.flex-editor__textarea {
   resize: vertical;
   min-height: 100px;
   padding: 0.6rem;
@@ -88,7 +88,7 @@ body {
   color: var(--text-dark);
 }
 
-.panel__textarea:focus {
+.flex-editor__textarea:focus {
   outline: 2px solid var(--green-mid);
   outline-offset: 1px;
 }
