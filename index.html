@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FlexParx</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="toolbar">
+    <h1 class="toolbar__title">Flex Parx</h1>
+  </header>
+
+  <main class="main">
+    <section class="panel">
+      <div class="panel__section">
+        <label class="panel__label" for="container-props">Container (road)</label>
+        <textarea id="container-props" class="panel__textarea" placeholder="flex-direction: row;&#10;align-items: stretch;"></textarea>
+      </div>
+
+      <div class="panel__section">
+        <label class="panel__label" for="car-props">Car</label>
+        <textarea id="car-props" class="panel__textarea" placeholder="align-self: auto;"></textarea>
+      </div>
+    </section>
+
+    <section class="road-area">
+      <div class="step-nav">
+        <button class="step-nav__btn" type="button">
+          <span class="step-nav__icon" aria-hidden="true">&#8592;</span>
+          Previous
+        </button>
+        <span class="step-nav__label">Step 1 / 5</span>
+        <button class="step-nav__btn" type="button">
+          Next
+          <span class="step-nav__icon" aria-hidden="true">&#8594;</span>
+        </button>
+      </div>
+
+      <div class="road">
+        <!-- parking spots and cars will be rendered here -->
+      </div>
+
+      <div class="level-actions">
+        <button class="level-actions__btn level-actions__btn--reset" type="button">
+          <span class="level-actions__icon" aria-hidden="true">&#8635;</span>
+          Reset
+        </button>
+        <button class="level-actions__btn level-actions__btn--submit" type="button">
+          <span class="level-actions__icon" aria-hidden="true">&#10003;</span>
+          Submit
+        </button>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
