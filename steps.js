@@ -1,0 +1,21 @@
+// List of steps (levels) for FlexParx.
+// Shape follows the level object described in CLAUDE.md.
+//
+// roadSolution and each entry in carTypeSolutions are string-to-string maps
+// of CSS property name -> CSS value, applied directly to the road container
+// / car elements respectively.
+const STEPS = [
+  {
+    id: 1,
+    hint: "flex-direction",
+    cars: ["car", "truck", "taxi"],
+    roadSolution: {
+      "flex-direction": "column"
+    },
+    carTypeSolutions: {
+      car: {},
+      taxi: {},
+      truck: {}
+    }
+  }
+];

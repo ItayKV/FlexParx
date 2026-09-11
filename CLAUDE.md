@@ -32,36 +32,33 @@ There are exactly **3 car types**, distinguished by color:
 
 Each car type has its own settable `align-self` value, independent of the other types. (Item-level properties are limited to `align-self` — see below.)
 
-### Level object
-A level defines:
+### Step object
+Steps (levels) live in `steps.js` as the `STEPS` array. A step defines:
 - **`cars`**: a flat list of car type names, e.g. `["car", "truck", "taxi"]`. List order *is* the starting order of the cars on the road (DOM order), before the player changes anything.
+- **`hint`**: names the flex concept this step is teaching (e.g. `"flex-direction"`). Not yet used in the UI — reserved for future hint display.
 - The **road**: a flex container. It needs no explicit initial state — it starts as plain `display: flex` with default flex behavior (`flex-direction: row`, `align-items: stretch`, etc.) until the player changes it.
-- The **solution**: the target values the player must reach for:
-  - the road (container-level): `flex-direction`, `align-items`.
-  - each car type (item-level): `align-self`.
-- The **parking spots**: designated end positions rendered on the road representing where each car must end up. Applying the solution's `flex-direction`/`align-items` (road) and `align-self` (per car type) should cause the cars to visually land on these parking spots.
+- **`roadSolution`**: a string-to-string map of CSS property name -> CSS value, applied directly to the road container, e.g. `{ "flex-direction": "column" }`. Keys are real CSS property names (kebab-case), not camelCase, so they can be applied via `style.setProperty` without translation.
+- **`carTypeSolutions`**: an object mapping each car type (`car`, `taxi`, `truck`) to its own string-to-string CSS property map (same shape as `roadSolution`), applied to that car type's elements. Defaults to an empty object per type when a step doesn't test item-level properties.
+- The **parking spots**: designated end positions rendered on the road representing where each car must end up. Applying `roadSolution` (road) and `carTypeSolutions` (per car type) should cause the cars to visually land on these parking spots.
 
 Suggested shape (illustrative, not final):
 
 ```js
-const level = {
-  id: 1,
-  name: "First Merge",
-  cars: ["car", "truck", "taxi"],
-  roadSolution: {
-    flexDirection: "column",
-    alignItems: "flex-start"
-  },
-  carTypeSolutions: {
-    car: { alignSelf: "flex-start" },
-    taxi: { alignSelf: "center" },
-    truck: { alignSelf: "flex-end" },
-  },
-  parkingSpots: [
-    // designated slots the cars must visually reach; positions implied by
-    // applying roadSolution + carTypeSolutions to the road's flex layout
-  ]
-};
+const STEPS = [
+  {
+    id: 1,
+    hint: "flex-direction",
+    cars: ["car", "truck", "taxi"],
+    roadSolution: {
+      "flex-direction": "column"
+    },
+    carTypeSolutions: {
+      car: {},
+      taxi: {},
+      truck: {}
+    }
+  }
+];
 ```
 
 ## Win Condition
@@ -72,7 +69,7 @@ A level is complete when the live computed layout (car positions, based on curre
 
 - Plain HTML/CSS/JS only. No frameworks, no bundlers, no npm dependencies, no server/backend of any kind.
 - Static site: must run by directly opening `index.html` in a browser (double-click / `file://`). No dev server, no build step, no install step.
-- Structure likely: `index.html`, `styles.css` (or split per concern), `script.js` (or split into modules like `levels.js`, `game.js`, `ui.js`).
+- Structure: `index.html`, `styles.css`, `steps.js` (the `STEPS` data array), plus further JS modules as game/UI logic is added.
 
 ## Open Questions / To Be Directed
 
