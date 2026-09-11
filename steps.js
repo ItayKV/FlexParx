@@ -8,7 +8,7 @@ const STEPS = [
   {
     id: 1,
     hint: "flex-direction",
-    cars: ["car", "truck", "taxi"],
+    cars: ["car", "car", "car"],
     roadSolution: {
       "flex-direction": "column"
     },

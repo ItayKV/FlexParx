@@ -9,6 +9,13 @@
 
   --text-light: #f2fbf5;
   --text-dark: #10261a;
+
+  --type-car: #e03131;
+  --type-car-bright: #ff8787;
+  --type-taxi: #f1c40f;
+  --type-taxi-bright: #ffe066;
+  --type-truck: #2f9e44;
+  --type-truck-bright: #69db7c;
 }
 
 * {

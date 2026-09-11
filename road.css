@@ -26,3 +26,66 @@
     transparent 80px
   );
 }
+
+/* Two overlapping flex containers filling the road: parking spots sit
+   beneath (target layout), cars sit above (player-controlled layout). */
+.road__layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  padding: 1rem;
+}
+
+.road__layer--parking {
+  z-index: 1;
+}
+
+.road__layer--cars {
+  z-index: 2;
+}
+
+.car,
+.parking-spot {
+  border-radius: 6px;
+}
+
+.car {
+  width: 100px;
+  height: 100px;
+  margin: 28px;
+}
+
+.parking-spot {
+  width: 116px;
+  height: 116px;
+  margin: 20px;
+  border: 2px dashed;
+  background: transparent;
+}
+
+.car--car {
+  background: var(--type-car);
+}
+
+.car--taxi {
+  background: var(--type-taxi);
+}
+
+.car--truck {
+  background: var(--type-truck);
+}
+
+.parking-spot--car {
+  border-color: var(--type-car-bright);
+  background: color-mix(in srgb, var(--type-car-bright) 25%, transparent);
+}
+
+.parking-spot--taxi {
+  border-color: var(--type-taxi-bright);
+  background: color-mix(in srgb, var(--type-taxi-bright) 25%, transparent);
+}
+
+.parking-spot--truck {
+  border-color: var(--type-truck-bright);
+  background: color-mix(in srgb, var(--type-truck-bright) 25%, transparent);
+}
