@@ -140,16 +140,6 @@ body {
   color: var(--green-dark);
 }
 
-.road {
-  position: relative;
-  flex: 1;
-  background: var(--grey-road);
-  border-radius: 8px;
-  border: 1px solid var(--green-dark);
-  min-height: 0;
-  overflow: hidden;
-}
-
 .level-actions {
   display: flex;
   justify-content: flex-end;
@@ -192,21 +182,4 @@ body {
 
 .level-actions__btn--submit:hover {
   background: var(--green-dark);
-}
-
-.road::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 10px;
-  transform: translateY(-50%);
-  background-image: repeating-linear-gradient(
-    to right,
-    #ffffff 0,
-    #ffffff 40px,
-    transparent 40px,
-    transparent 80px
-  );
 }
