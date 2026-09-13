@@ -22,7 +22,7 @@
     <section class="flex-editor">
       <div class="flex-editor__field">
         <label class="flex-editor__label" for="container-props">Container (road)</label>
-        <textarea id="container-props" class="flex-editor__textarea" placeholder="flex-direction: row;"></textarea>
+        <textarea id="container-props" class="flex-editor__textarea" placeholder="cotnainer flex attributes"></textarea>
       </div>
 
       <div id="car-type-fields" class="flex-editor__car-fields"></div>
@@ -50,11 +50,12 @@
 
       <!-- Component: Level Actions -->
       <div class="level-actions">
-        <button class="level-actions__btn level-actions__btn--reset" type="button">
+        <span id="level-actions-feedback" class="level-actions__feedback"></span>
+        <button id="level-actions-reset" class="level-actions__btn level-actions__btn--reset" type="button">
           <span class="level-actions__icon" aria-hidden="true">&#8635;</span>
           Reset
         </button>
-        <button class="level-actions__btn level-actions__btn--submit" type="button">
+        <button id="level-actions-submit" class="level-actions__btn level-actions__btn--submit" type="button">
           <span class="level-actions__icon" aria-hidden="true">&#10003;</span>
           Submit
         </button>
@@ -67,5 +68,6 @@
   <script src="components/road/road.js"></script>
   <script src="components/flex-editor/flex-editor.js"></script>
   <script src="components/step-nav/step-nav.js"></script>
+  <script src="components/level-actions/level-actions.js"></script>
 </body>
 </html>

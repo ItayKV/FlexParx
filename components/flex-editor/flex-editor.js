@@ -47,7 +47,7 @@ function renderCarTypeFields(step) {
     const textarea = document.createElement("textarea");
     textarea.id = `car-props-${type}`;
     textarea.className = "flex-editor__textarea";
-    textarea.placeholder = "align-self: auto;";
+    textarea.placeholder = `${type} flex attributes`;
     textarea.addEventListener("input", handleCarPropsInput(type));
 
     field.appendChild(label);
@@ -55,6 +55,22 @@ function renderCarTypeFields(step) {
     container.appendChild(field);
   });
 }
+
+function reset() {
+  document.getElementById("container-props").value = "";
+  renderCarTypeFields(StepsProvider.getCurrent());
+}
+
+function getContainerProps() {
+  return parseCssDeclarations(document.getElementById("container-props").value);
+}
+
+function getCarProps(type) {
+  const textarea = document.getElementById(`car-props-${type}`);
+  return textarea ? parseCssDeclarations(textarea.value) : {};
+}
+
+window.FlexEditor = { reset, getContainerProps, getCarProps };
 
 document.addEventListener("DOMContentLoaded", () => {
   document

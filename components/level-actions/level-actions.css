@@ -1,7 +1,21 @@
 .level-actions {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   gap: 1rem;
+}
+
+.level-actions__feedback {
+  margin-right: auto;
+  font-weight: 600;
+}
+
+.level-actions__feedback--success {
+  color: var(--green-dark);
+}
+
+.level-actions__feedback--error {
+  color: var(--type-car);
 }
 
 .level-actions__btn {
