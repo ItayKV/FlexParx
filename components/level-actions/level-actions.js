@@ -1,6 +1,7 @@
 // Level Actions component: Reset clears every flex editor field and any
 // applied styles back to the level's starting state; Submit checks the
-// currently applied road/car-type properties against the step's solution.
+// typed flex-editor values against the step's solution and shows the
+// result in a popup (dismissable via its button or a click outside it).
 
 function propsMatch(actual, expected) {
   const expectedKeys = Object.keys(expected);
@@ -9,11 +10,20 @@ function propsMatch(actual, expected) {
   return expectedKeys.every((prop) => actual[prop] === expected[prop]);
 }
 
-function setFeedback(message, isSuccess) {
-  const feedback = document.getElementById("level-actions-feedback");
-  feedback.textContent = message;
-  feedback.classList.toggle("level-actions__feedback--success", isSuccess);
-  feedback.classList.toggle("level-actions__feedback--error", !isSuccess);
+function showPopup(message, isSuccess) {
+  const dialog = document.getElementById("feedback-popup-dialog");
+  document.getElementById("feedback-popup-message").textContent = message;
+  dialog.classList.toggle("feedback-popup__dialog--success", isSuccess);
+  dialog.classList.toggle("feedback-popup__dialog--error", !isSuccess);
+  document.getElementById("feedback-popup").hidden = false;
+}
+
+function closePopup() {
+  document.getElementById("feedback-popup").hidden = true;
+}
+
+function handlePopupKeydown(event) {
+  if (event.key === "Escape") closePopup();
 }
 
 function handleReset() {
@@ -24,10 +34,6 @@ function handleReset() {
   Array.from(new Set(step.cars)).forEach((type) => {
     Road.applyCarProps(type, {});
   });
-
-  const feedback = document.getElementById("level-actions-feedback");
-  feedback.textContent = "";
-  feedback.className = "level-actions__feedback";
 }
 
 function handleSubmit() {
@@ -44,9 +50,9 @@ function handleSubmit() {
   );
 
   if (containerSolved && carsSolved) {
-    setFeedback("Parked! Level solved.", true);
+    showPopup("Parked! Level solved.", true);
   } else {
-    setFeedback("Not quite - keep adjusting.", false);
+    showPopup("Not quite - keep adjusting.", false);
   }
 }
 
@@ -57,10 +63,13 @@ document.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("level-actions-submit")
     .addEventListener("click", handleSubmit);
+  document
+    .getElementById("feedback-popup-close")
+    .addEventListener("click", closePopup);
+  document
+    .getElementById("feedback-popup-backdrop")
+    .addEventListener("click", closePopup);
+  document.addEventListener("keydown", handlePopupKeydown);
 
-  StepsProvider.subscribe(() => {
-    document.getElementById("level-actions-feedback").textContent = "";
-    document.getElementById("level-actions-feedback").className =
-      "level-actions__feedback";
-  });
+  StepsProvider.subscribe(closePopup);
 });

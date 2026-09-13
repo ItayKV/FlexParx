@@ -50,7 +50,6 @@
 
       <!-- Component: Level Actions -->
       <div class="level-actions">
-        <span id="level-actions-feedback" class="level-actions__feedback"></span>
         <button id="level-actions-reset" class="level-actions__btn level-actions__btn--reset" type="button">
           <span class="level-actions__icon" aria-hidden="true">&#8635;</span>
           Reset
@@ -59,6 +58,14 @@
           <span class="level-actions__icon" aria-hidden="true">&#10003;</span>
           Submit
         </button>
+      </div>
+
+      <div id="feedback-popup" class="feedback-popup" hidden>
+        <div id="feedback-popup-backdrop" class="feedback-popup__backdrop"></div>
+        <div id="feedback-popup-dialog" class="feedback-popup__dialog" role="alertdialog" aria-modal="true">
+          <p id="feedback-popup-message" class="feedback-popup__message"></p>
+          <button id="feedback-popup-close" class="feedback-popup__btn" type="button">OK</button>
+        </div>
       </div>
     </section>
   </main>
