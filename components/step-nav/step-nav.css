@@ -25,6 +25,11 @@
   background: var(--green-darkest);
 }
 
+.step-nav__btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .step-nav__icon {
   font-size: 1.1rem;
   line-height: 1;

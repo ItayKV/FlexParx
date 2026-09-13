@@ -30,4 +30,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("car-props")
     .addEventListener("input", handleCarPropsInput);
+
+  StepsProvider.subscribe(() => {
+    document.getElementById("container-props").value = "";
+    document.getElementById("car-props").value = "";
+  });
 });

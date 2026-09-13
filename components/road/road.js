@@ -2,8 +2,6 @@
 // layout), and applies live prop changes from the Flex Editor with a FLIP
 // position animation.
 window.Road = (function () {
-  let currentStep = STEPS[0];
-
   function applyProps(element, props) {
     Object.entries(props).forEach(([prop, value]) => {
       element.style.setProperty(prop, value);
@@ -66,7 +64,6 @@ window.Road = (function () {
   }
 
   function render(step) {
-    currentStep = step;
     renderParking(step);
     renderCars(step);
   }
@@ -88,7 +85,10 @@ window.Road = (function () {
     });
   }
 
-  document.addEventListener("DOMContentLoaded", () => render(currentStep));
+  document.addEventListener("DOMContentLoaded", () => {
+    render(StepsProvider.getCurrent());
+    StepsProvider.subscribe((step) => render(step));
+  });
 
   return { render, applyContainerProps, applyCarProps };
 })();

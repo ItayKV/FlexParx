@@ -17,5 +17,18 @@ const STEPS = [
       taxi: {},
       truck: {}
     }
+  },
+  {
+    id: 2,
+    hint: "flex-direction",
+    cars: ["car", "truck", "taxi"],
+    roadSolution: {
+      "justify-content": "space-around"
+    },
+    carTypeSolutions: {
+      car: {'align-self': 'end'},
+      taxi: {},
+      truck: {'align-self': 'center'}
+    }
   }
 ];

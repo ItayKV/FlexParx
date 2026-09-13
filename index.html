@@ -34,12 +34,12 @@
     <section class="road-area">
       <!-- Component: Step Nav -->
       <div class="step-nav">
-        <button class="step-nav__btn" type="button">
+        <button id="step-nav-prev" class="step-nav__btn" type="button">
           <span class="step-nav__icon" aria-hidden="true">&#8592;</span>
           Previous
         </button>
-        <span class="step-nav__label">Step 1 / 5</span>
-        <button class="step-nav__btn" type="button">
+        <span id="step-nav-label" class="step-nav__label">Loading Steps</span>
+        <button id="step-nav-next" class="step-nav__btn" type="button">
           Next
           <span class="step-nav__icon" aria-hidden="true">&#8594;</span>
         </button>
@@ -66,7 +66,9 @@
   </main>
 
   <script src="data/steps.js"></script>
+  <script src="data/steps-provider.js"></script>
   <script src="components/road/road.js"></script>
   <script src="components/flex-editor/flex-editor.js"></script>
+  <script src="components/step-nav/step-nav.js"></script>
 </body>
 </html>
