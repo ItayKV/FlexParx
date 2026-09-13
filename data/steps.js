@@ -20,7 +20,7 @@ const STEPS = [
   },
   {
     id: 2,
-    hint: "flex-direction",
+    hint: "justify-content + align-self",
     cars: ["car", "truck", "taxi"],
     roadSolution: {
       "justify-content": "space-around"

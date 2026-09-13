@@ -4,7 +4,6 @@
 // (mismatched properties), and shows the result in a popup (dismissable
 // via its button, a click outside it, or Escape).
 
-const BEST_FINES_KEY = "flexparx-best-fines";
 const MISMATCH_FINE_PER_PROP = 10;
 
 function propsMatch(actual, expected) {
@@ -41,35 +40,6 @@ function computeMismatchFine(step) {
   );
 
   return (containerMismatches + carMismatches) * MISMATCH_FINE_PER_PROP;
-}
-
-function loadBestFines() {
-  try {
-    const raw = localStorage.getItem(BEST_FINES_KEY);
-    return raw ? JSON.parse(raw) : {};
-  } catch (e) {
-    return {};
-  }
-}
-
-function saveBestFines(bestFines) {
-  localStorage.setItem(BEST_FINES_KEY, JSON.stringify(bestFines));
-}
-
-function getTotalFine(bestFines) {
-  return Object.values(bestFines).reduce((sum, fine) => sum + fine, 0);
-}
-
-function recordAttempt(stepId, fine) {
-  const bestFines = loadBestFines();
-  const key = String(stepId);
-
-  if (!(key in bestFines) || fine < bestFines[key]) {
-    bestFines[key] = fine;
-    saveBestFines(bestFines);
-  }
-
-  return { bestForStep: bestFines[key], total: getTotalFine(bestFines) };
 }
 
 function updateTotalDisplay(total) {
@@ -119,7 +89,7 @@ function handleSubmit() {
   );
 
   const attemptFine = computeMismatchFine(step);
-  const { bestForStep, total } = recordAttempt(step.id, attemptFine);
+  const { bestForStep, total } = Scores.recordAttempt(step.id, attemptFine);
 
   const solved = containerSolved && carsSolved;
   const message = solved ? "Parked! Level solved." : "Not quite - keep adjusting.";
@@ -128,7 +98,7 @@ function handleSubmit() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  updateTotalDisplay(getTotalFine(loadBestFines()));
+  updateTotalDisplay(Scores.getTotalFine(Scores.loadBestFines()));
 
   document
     .getElementById("level-actions-reset")
