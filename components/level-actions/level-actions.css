@@ -5,6 +5,12 @@
   gap: 1rem;
 }
 
+.level-actions__total {
+  margin-right: auto;
+  font-weight: 600;
+  color: var(--green-dark);
+}
+
 .level-actions__btn {
   display: inline-flex;
   align-items: center;
@@ -94,6 +100,13 @@
 
 .feedback-popup__message {
   margin: 0;
+}
+
+.feedback-popup__score {
+  margin: -0.6rem 0 0;
+  font-size: 0.85rem;
+  font-weight: 400;
+  opacity: 0.85;
 }
 
 .feedback-popup__btn {
