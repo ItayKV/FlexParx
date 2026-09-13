@@ -1,5 +1,6 @@
-// Flex Editor component: parses the two textareas' typed CSS declarations
-// and forwards the resulting prop objects to the Road component.
+// Flex Editor component: parses the typed CSS declarations from the
+// container textarea and one textarea per car type present in the current
+// step, and forwards the resulting prop objects to the Road component.
 
 function parseCssDeclarations(text) {
   const props = {};
@@ -19,20 +20,51 @@ function handleContainerPropsInput(event) {
   Road.applyContainerProps(parseCssDeclarations(event.target.value));
 }
 
-function handleCarPropsInput(event) {
-  Road.applyCarProps(parseCssDeclarations(event.target.value));
+function handleCarPropsInput(type) {
+  return (event) => {
+    Road.applyCarProps(type, parseCssDeclarations(event.target.value));
+  };
+}
+
+function capitalize(word) {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
+function renderCarTypeFields(step) {
+  const container = document.getElementById("car-type-fields");
+  container.innerHTML = "";
+
+  const types = Array.from(new Set(step.cars));
+  types.forEach((type) => {
+    const field = document.createElement("div");
+    field.className = "flex-editor__field";
+
+    const label = document.createElement("label");
+    label.className = "flex-editor__label";
+    label.setAttribute("for", `car-props-${type}`);
+    label.textContent = capitalize(type);
+
+    const textarea = document.createElement("textarea");
+    textarea.id = `car-props-${type}`;
+    textarea.className = "flex-editor__textarea";
+    textarea.placeholder = "align-self: auto;";
+    textarea.addEventListener("input", handleCarPropsInput(type));
+
+    field.appendChild(label);
+    field.appendChild(textarea);
+    container.appendChild(field);
+  });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("container-props")
     .addEventListener("input", handleContainerPropsInput);
-  document
-    .getElementById("car-props")
-    .addEventListener("input", handleCarPropsInput);
 
-  StepsProvider.subscribe(() => {
+  renderCarTypeFields(StepsProvider.getCurrent());
+
+  StepsProvider.subscribe((step) => {
     document.getElementById("container-props").value = "";
-    document.getElementById("car-props").value = "";
+    renderCarTypeFields(step);
   });
 });

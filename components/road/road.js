@@ -76,9 +76,9 @@ window.Road = (function () {
     });
   }
 
-  function applyCarProps(props) {
+  function applyCarProps(type, props) {
     withCarPositionAnimation(() => {
-      document.querySelectorAll("#road-cars .car").forEach((car) => {
+      document.querySelectorAll(`#road-cars .car--${type}`).forEach((car) => {
         car.style.cssText = "";
         applyProps(car, props);
       });

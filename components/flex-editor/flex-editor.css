@@ -15,6 +15,12 @@
   gap: 0.9rem;
 }
 
+.flex-editor__car-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
 .flex-editor__label {
   font-weight: 600;
   color: var(--green-dark);
