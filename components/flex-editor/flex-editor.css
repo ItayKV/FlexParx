@@ -1,0 +1,38 @@
+.flex-editor {
+  flex: 0 0 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  background: var(--text-light);
+  border: 1px solid var(--green-light);
+  border-radius: 8px;
+  padding: 2rem;
+}
+
+.flex-editor__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.flex-editor__label {
+  font-weight: 600;
+  color: var(--green-dark);
+}
+
+.flex-editor__textarea {
+  resize: vertical;
+  min-height: 100px;
+  padding: 0.6rem;
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 0.9rem;
+  border: 1px solid var(--green-mid);
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--text-dark);
+}
+
+.flex-editor__textarea:focus {
+  outline: 2px solid var(--green-mid);
+  outline-offset: 1px;
+}

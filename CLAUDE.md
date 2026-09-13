@@ -69,7 +69,7 @@ A level is complete when the live computed layout (car positions, based on curre
 
 - Plain HTML/CSS/JS only. No frameworks, no bundlers, no npm dependencies, no server/backend of any kind.
 - Static site: must run by directly opening `index.html` in a browser (double-click / `file://`). No dev server, no build step, no install step.
-- Structure: `index.html`, `styles.css`, `steps.js` (the `STEPS` data array), plus further JS modules as game/UI logic is added.
+- Structure: component-based, split across `shared/` (base CSS: variables, reset, page layout shell), `components/<name>/` (each with its own `.css` and, where it has behavior, a `.js` file — e.g. `components/road/road.js`, `components/flex-editor/flex-editor.js`), and `data/steps.js` (the `STEPS` array). No build step: components communicate via plain namespaced globals (e.g. `window.Road`), not ES modules — `<script>`/`<link>` tags in `index.html` wire everything together, ordered so shared CSS vars and `STEPS` load before anything that depends on them. HTML structure itself stays inline in `index.html` per component (marked with `<!-- Component: X -->` comments) since there's no templating/include mechanism available under `file://`.
 
 ## Open Questions / To Be Directed
 

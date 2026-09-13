@@ -1,0 +1,43 @@
+.level-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.level-actions__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 140px;
+  padding: 0.6rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.level-actions__icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.level-actions__btn--reset {
+  color: var(--green-mid);
+  background: var(--text-light);
+  border: 1px solid var(--green-mid);
+}
+
+.level-actions__btn--reset:hover {
+  background: var(--green-lightest);
+}
+
+.level-actions__btn--submit {
+  color: var(--text-light);
+  background: var(--green-mid);
+}
+
+.level-actions__btn--submit:hover {
+  background: var(--green-dark);
+}
