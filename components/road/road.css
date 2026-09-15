@@ -1,6 +1,12 @@
 /* Road component: the flex container cars are placed in and parked on. */
 
 .road {
+  /* Baseline car size, scaled down on narrower viewports. Car/parking-spot
+     sizes and margins below are all ratios of this so their combined
+     footprint (size + 2*margin) stays equal between the two, keeping
+     parking spots aligned with where their cars should land. */
+  --cell: clamp(48px, 10vw, 100px);
+
   position: relative;
   flex: 1;
   background: var(--grey-road);
@@ -54,16 +60,16 @@
 }
 
 .car {
-  width: 100px;
-  height: 100px;
-  margin: 28px;
+  width: var(--cell);
+  height: var(--cell);
+  margin: calc(var(--cell) * 0.28);
   transition: transform 0.3s ease;
 }
 
 .parking-spot {
-  width: 116px;
-  height: 116px;
-  margin: 20px;
+  width: calc(var(--cell) * 1.16);
+  height: calc(var(--cell) * 1.16);
+  margin: calc(var(--cell) * 0.2);
   border: 2px dashed;
   background: transparent;
 }

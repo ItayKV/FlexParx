@@ -49,6 +49,18 @@
   background: var(--green-dark);
 }
 
+@media (max-width: 425px) {
+  .level-actions__btn {
+    width: auto;
+    justify-content: center;
+    padding: 0.6rem 0.9rem;
+  }
+
+  .level-actions__text {
+    display: none;
+  }
+}
+
 .feedback-popup {
   position: fixed;
   inset: 0;

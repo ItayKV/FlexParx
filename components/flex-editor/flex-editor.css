@@ -9,6 +9,13 @@
   padding: 2rem;
 }
 
+@media (max-width: 1024px) {
+  .flex-editor {
+    order: 2;
+    flex: 1 1 auto;
+  }
+}
+
 .flex-editor__field {
   display: flex;
   flex-direction: column;

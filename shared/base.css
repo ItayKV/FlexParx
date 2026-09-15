@@ -51,3 +51,16 @@ body {
   gap: 1rem;
   min-height: 0;
 }
+
+@media (max-width: 1024px) {
+  .main {
+    flex-direction: column;
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .road-area {
+    order: 1;
+    min-height: 50vh;
+  }
+}
