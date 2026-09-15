@@ -6,26 +6,55 @@
 
 const MISMATCH_FINE_PER_PROP = 10;
 
+function buildDefaults(attributes) {
+  const defaults = {};
+  attributes.forEach((attr) => {
+    defaults[attr.prop] = String(attr.default);
+  });
+  return defaults;
+}
+
+const CONTAINER_DEFAULTS = buildDefaults(FlexAttributes.container);
+const ITEM_DEFAULTS = buildDefaults(FlexAttributes.item);
+
+// Some values are aliases of each other (e.g. "start"/"flex-start") - map
+// to a canonical form before comparing so alias pairs count as equal.
+function canonicalValue(value) {
+  return FlexAttributes.valueAliases[value] || value;
+}
+
 function propsMatch(actual, expected) {
   const expectedKeys = Object.keys(expected);
   const actualKeys = Object.keys(actual);
   if (expectedKeys.length !== actualKeys.length) return false;
-  return expectedKeys.every((prop) => actual[prop] === expected[prop]);
+  return expectedKeys.every(
+    (prop) => canonicalValue(actual[prop]) === canonicalValue(expected[prop])
+  );
 }
 
-function countMismatches(actual, expected) {
-  const keys = new Set([...Object.keys(actual), ...Object.keys(expected)]);
-  let count = 0;
-  keys.forEach((key) => {
-    if (actual[key] !== expected[key]) count += 1;
-  });
-  return count;
+function countMismatches(actual, expected, defaults) {
+  const actualKeys = new Set(Object.keys(actual));
+  const expectedKeys = new Set(Object.keys(expected));
+
+  const sharedKeys = [...actualKeys].filter((key) => expectedKeys.has(key));
+  const missingKeys = [...expectedKeys].filter((key) => !actualKeys.has(key));
+  const extraKeys = [...actualKeys].filter((key) => !expectedKeys.has(key));
+
+  const sharedMismatches = sharedKeys.filter(
+    (key) => canonicalValue(actual[key]) !== canonicalValue(expected[key])
+  ).length;
+  const extraMismatches = extraKeys.filter(
+    (key) => canonicalValue(actual[key]) !== canonicalValue(defaults[key])
+  ).length;
+
+  return sharedMismatches + missingKeys.length + extraMismatches;
 }
 
 function computeMismatchFine(step) {
   const containerMismatches = countMismatches(
     FlexEditor.getContainerProps(),
-    step.roadSolution
+    step.roadSolution,
+    CONTAINER_DEFAULTS
   );
 
   const types = Array.from(new Set(step.cars));
@@ -34,7 +63,8 @@ function computeMismatchFine(step) {
       sum +
       countMismatches(
         FlexEditor.getCarProps(type),
-        step.carTypeSolutions[type] || {}
+        step.carTypeSolutions[type] || {},
+        ITEM_DEFAULTS
       ),
     0
   );

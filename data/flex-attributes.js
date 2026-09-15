@@ -100,5 +100,17 @@ window.FlexAttributes = {
       max: 10,
       step: 1
     }
-  ]
+  ],
+
+  // Some select options are aliases of each other per the CSS Box
+  // Alignment spec (e.g. "start"/"end" behave the same as "flex-start"/
+  // "flex-end" in a flex container) - map each alias to its canonical
+  // value so comparisons treat them as equal. "auto" (align-self's own
+  // default) is treated as align-items' default ("stretch"), its
+  // effective rendered behavior in the common case.
+  valueAliases: {
+    start: "flex-start",
+    end: "flex-end",
+    auto: "stretch"
+  }
 };
