@@ -23,15 +23,6 @@ function canonicalValue(value) {
   return FlexAttributes.valueAliases[value] || value;
 }
 
-function propsMatch(actual, expected) {
-  const expectedKeys = Object.keys(expected);
-  const actualKeys = Object.keys(actual);
-  if (expectedKeys.length !== actualKeys.length) return false;
-  return expectedKeys.every(
-    (prop) => canonicalValue(actual[prop]) === canonicalValue(expected[prop])
-  );
-}
-
 function countMismatches(actual, expected, defaults) {
   const actualKeys = new Set(Object.keys(actual));
   const expectedKeys = new Set(Object.keys(expected));
@@ -108,20 +99,10 @@ function handleReset() {
 function handleSubmit() {
   const step = StepsProvider.getCurrent();
 
-  const containerSolved = propsMatch(
-    FlexEditor.getContainerProps(),
-    step.roadSolution
-  );
-
-  const types = Array.from(new Set(step.cars));
-  const carsSolved = types.every((type) =>
-    propsMatch(FlexEditor.getCarProps(type), step.carTypeSolutions[type] || {})
-  );
-
   const attemptFine = computeMismatchFine(step);
   const { bestForStep, total } = Scores.recordAttempt(step.id, attemptFine);
 
-  const solved = containerSolved && carsSolved;
+  const solved = attemptFine === 0;
   const message = solved ? "Parked! Level solved." : "Not quite - keep adjusting.";
   showPopup(message, solved, attemptFine, bestForStep, total);
   updateTotalDisplay(total);
