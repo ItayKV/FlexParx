@@ -54,7 +54,6 @@
   width: 100%;
 }
 
-.car,
 .parking-spot {
   border-radius: 6px;
 }
@@ -64,22 +63,21 @@
   height: var(--cell);
   margin: calc(var(--cell) * 0.28);
   transition: transform 0.3s ease;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
 }
 
 .parking-spot {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border-color: transparent;
   width: calc(var(--cell) * 1.16);
   height: calc(var(--cell) * 1.16);
   margin: calc(var(--cell) * 0.2);
-  border: 2px dashed;
-  background: transparent;
-}
-.car {
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: transparent;
-    width: 80px; 
-    height: 50px;
 }
 
 .taxi-car {
@@ -92,16 +90,6 @@
 
 .truck-car {
     background-image: url('../photos/truck.png');
-}
-
-.spot {
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: transparent;
-    border-color: transparent;
-    width: 60px;
-    height: 100px;
 }
 
 /*top parking*/
