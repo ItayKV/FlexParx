@@ -73,51 +73,52 @@
   border: 2px dashed;
   background: transparent;
 }
-.car--car {
-    background-image: url('../photos/private.png');
+.car {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     background-color: transparent;
+    width: 80px; 
+    height: 50px;
 }
 
-.car--taxi {
+.taxi-car {
     background-image: url('../photos/taxi.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: transparent;
 }
 
-.car--truck {
+.private-car {
+    background-image: url('../photos/private.png');
+}
+
+.truck-car {
     background-image: url('../photos/truck.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: transparent;
-}
-.parking-spot--car {
-    background-image: url('../photos/privateP.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    border-color: transparent;
-    background-color: transparent;
-}
-.parking-spot--taxi {
-    background-image: url('../photos/taxiP.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    border-color: transparent;
-    background-color: transparent;
-}
-.parking-spot--truck {
-    background-image: url('../photos/truckP.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    border-color: transparent;
-    background-color: transparent;
 }
 
+.spot {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    border-color: transparent;
+    width: 60px;
+    height: 100px;
+}
+
+/*top parking*/
+.spot-top {
+    transform: rotate(90deg);
+}
+/*bottom parking*/
+.spot-bottom {
+    transform: rotate(-90deg);
+}
+
+.taxi-spot {
+    background-image: url('../photos/taxiP.png');
+}
+.private-spot {
+    background-image: url('../photos/privateP.png');
+}
+.truck-spot {
+    background-image: url('../photos/truckP.png');
+}
