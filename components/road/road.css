@@ -73,30 +73,51 @@
   border: 2px dashed;
   background: transparent;
 }
-
 .car--car {
-  background: var(--type-car);
+    background-image: url('../photos/private.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
 }
 
 .car--taxi {
-  background: var(--type-taxi);
+    background-image: url('../photos/taxi.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
 }
 
 .car--truck {
-  background: var(--type-truck);
+    background-image: url('../photos/truck.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
 }
-
 .parking-spot--car {
-  border-color: var(--type-car-bright);
-  background: color-mix(in srgb, var(--type-car-bright) 25%, transparent);
+    background-image: url('../photos/privateP.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-color: transparent;
+    background-color: transparent;
 }
-
 .parking-spot--taxi {
-  border-color: var(--type-taxi-bright);
-  background: color-mix(in srgb, var(--type-taxi-bright) 25%, transparent);
+    background-image: url('../photos/taxiP.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-color: transparent;
+    background-color: transparent;
+}
+.parking-spot--truck {
+    background-image: url('../photos/truckP.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-color: transparent;
+    background-color: transparent;
 }
 
-.parking-spot--truck {
-  border-color: var(--type-truck-bright);
-  background: color-mix(in srgb, var(--type-truck-bright) 25%, transparent);
-}
