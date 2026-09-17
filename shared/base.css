@@ -55,6 +55,7 @@ body {
 
 @media (max-width: 1024px) {
   .main {
+    flex: 1 0 auto;
     flex-direction: column;
     padding: 1.5rem;
     gap: 1.5rem;
@@ -62,6 +63,6 @@ body {
 
   .road-area {
     order: 1;
-    min-height: 50vh;
+    flex:none;
   }
 }
