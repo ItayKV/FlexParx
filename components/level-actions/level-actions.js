@@ -1,20 +1,18 @@
 // Level Actions component: Reset clears every flex editor field and any
-// applied styles back to the level's starting state; Submit checks the
-// typed flex-editor values against the step's solution, computes a fine
-// (mismatched properties), and shows the result in a popup (dismissable
-// via its button, a click outside it, or Escape).
+// applied styles back to the level's starting state; Submit checks where the
+// cars actually ended up - each car must sit on a parking spot of its own
+// type - fines every car that doesn't, and shows the result in a popup
+// (dismissable via its button, a click outside it, or Escape).
+//
+// Checking positions rather than the chosen property values means any
+// combination of flex properties that parks the cars correctly is accepted.
 
-const MISMATCH_FINE_PER_PROP = 10;
+const MISPARKED_FINE_PER_CAR = 10;
 const POSITION_TOLERANCE_PX = 1;
 
-const CONTAINER_DEFAULTS = buildDefaults(FlexAttributes.container);
-const ITEM_DEFAULTS = buildDefaults(FlexAttributes.item);
-
-// Some values are aliases of each other (e.g. "start"/"flex-start") - map
-// to a canonical form before comparing so alias pairs count as equal.
-
-
-
+// Center of an element within its road layer. offsetLeft/offsetTop come from
+// layout and ignore transforms, so the result isn't affected by a car's move
+// animation still running or by the road being scaled to fit the screen.
 function layoutCenter(element) {
   return {
     x: element.offsetLeft + element.offsetWidth / 2,
@@ -29,12 +27,17 @@ function isSamePosition(a, b) {
   );
 }
 
+// Cars and spots are both rendered in step.cars order, so the element at
+// index i is of type step.cars[i] in both layers (the CSS `order` property
+// moves elements visually but never changes their DOM order). Cars of the
+// same type are interchangeable, so each car may take any free spot of its
+// type; a taken spot can't be used by a second car.
 function countMisparkedCars(step) {
   const cars = document.querySelectorAll("#road-cars .car");
   const spots = Array.from(document.querySelectorAll("#road-parking .parking-spot"));
   const freeSpotIndexes = new Set(spots.keys());
   let misparked = 0;
- 
+
   cars.forEach((car, carIndex) => {
     const carCenter = layoutCenter(car);
     const spotIndex = [...freeSpotIndexes].find(
@@ -42,14 +45,14 @@ function countMisparkedCars(step) {
         step.cars[i] === step.cars[carIndex] &&
         isSamePosition(carCenter, layoutCenter(spots[i]))
     );
- 
+
     if (spotIndex === undefined) {
       misparked += 1;
     } else {
       freeSpotIndexes.delete(spotIndex);
     }
   });
- 
+
   return misparked;
 }
 
@@ -93,7 +96,7 @@ function handleReset() {
 function handleSubmit() {
   const step = StepsProvider.getCurrent();
 
-  const attemptFine = computeMismatchFine(step);
+  const attemptFine = computeFine(step);
   const { bestForStep, total } = Scores.recordAttempt(step.id, attemptFine);
 
   const solved = attemptFine === 0;
