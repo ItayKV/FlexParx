@@ -1,5 +1,6 @@
 .step-instruction {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
   padding: 0.9rem 1.25rem;
@@ -7,6 +8,7 @@
   border: 1px solid var(--green-light);
   border-left: 4px solid var(--green-mid);
   border-radius: 8px;
+  gap: 0.6rem 1rem;
 }
 
 .step-instruction__concept {
@@ -23,6 +25,7 @@
   margin: 0;
   line-height: 1.5;
   color: var(--text-dark);
+  flex: 1 1 20rem;
 }
 
 @media (max-width: 425px) {
