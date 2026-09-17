@@ -2,6 +2,24 @@
 // layout), and applies live prop changes from the Flex Editor with a FLIP
 // position animation.
 window.Road = (function () {
+  // The road has a fixed logical size (see road.css), so every step's
+  // solution lays out the same on any screen. It is scaled visually to fit
+  // the free space in its frame - a transform, so the flex layout inside it
+  // is unaffected.
+  let scale = 1;
+
+  function fitRoadToFrame() {
+    const frame = document.querySelector(".road-frame");
+    const road = frame.querySelector(".road");
+
+    scale = Math.min(
+      1,
+      frame.clientWidth / road.offsetWidth,
+      frame.clientHeight / road.offsetHeight
+    );
+    road.style.transform = scale < 1 ? `scale(${scale})` : "";
+  }
+
   function applyProps(element, props) {
     Object.entries(props).forEach(([prop, value]) => {
       element.style.setProperty(prop, value);
@@ -48,8 +66,10 @@ window.Road = (function () {
     cars.forEach((car, i) => {
       const first = firstRects[i];
       const last = car.getBoundingClientRect();
-      const dx = first.left - last.left;
-      const dy = first.top - last.top;
+      // Rects are measured on screen (scaled); the transform below is
+      // applied inside the scaled road, so convert back to road pixels.
+      const dx = (first.left - last.left) / scale;
+      const dy = (first.top - last.top) / scale;
 
       if (dx || dy) {
         car.style.transition = "none";
@@ -86,6 +106,12 @@ window.Road = (function () {
   }
 
   document.addEventListener("DOMContentLoaded", () => {
+    // Re-fit whenever the frame's size changes: window resizes, and also
+    // layout shifts such as a longer instruction text on another step.
+    new ResizeObserver(fitRoadToFrame).observe(
+      document.querySelector(".road-frame")
+    );
+
     render(StepsProvider.getCurrent());
     StepsProvider.subscribe((step) => render(step));
   });

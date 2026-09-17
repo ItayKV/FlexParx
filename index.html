@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="components/toolbar/toolbar.css" />
   <link rel="stylesheet" href="components/flex-editor/flex-editor.css" />
   <link rel="stylesheet" href="components/step-nav/step-nav.css" />
+  <link rel="stylesheet" href="components/step-instruction/step-instruction.css" />
   <link rel="stylesheet" href="components/road/road.css" />
   <link rel="stylesheet" href="components/level-actions/level-actions.css" />
 </head>
@@ -42,16 +43,20 @@
         </button>
       </div>
 
+      <!-- Component: Step Instruction -->                                   
+      <div class="step-instruction">                                         
+        <span id="step-instruction-concept" class="step-instruction__concept"></span>   
+        <p id="step-instruction-text" class="step-instruction__text"></p>    
+      </div>                                                                 
+
       <!-- Component: Road -->
-      <div class="road">
-        <div id="road-parking" class="road__layer road__layer--parking">
-          <div class="spot private-spot spot-top"></div>
-          <div class="spot taxi-spot spot-bottom"></div>
-        </div>      
-        <div id="road-cars" class="road__layer road__layer--cars">
+      <div class="road-frame">
+        <div class="road">
+          <div id="road-parking" class="road__layer road__layer--parking"></div>
+          <div id="road-cars" class="road__layer road__layer--cars"></div>
         </div>
       </div>
-
+      
       <!-- Component: Level Actions -->
       <div class="level-actions">
         <span id="level-actions-total" class="level-actions__total"></span>
@@ -83,6 +88,7 @@
   <script src="components/road/road.js"></script>
   <script src="components/flex-editor/flex-editor.js"></script>
   <script src="components/step-nav/step-nav.js"></script>
+  <script src="components/step-instruction/step-instruction.js"></script>
   <script src="components/level-actions/level-actions.js"></script>
 </body>
 </html>
