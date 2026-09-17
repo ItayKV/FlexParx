@@ -1,0 +1,34 @@
+.step-instruction {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.25rem;
+  background: var(--text-light);
+  border: 1px solid var(--green-light);
+  border-left: 4px solid var(--green-mid);
+  border-radius: 8px;
+}
+
+.step-instruction__concept {
+  flex-shrink: 0;
+  padding: 0.25rem 0.6rem;
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  background: var(--green-dark);
+  border-radius: 4px;
+}
+
+.step-instruction__text {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--text-dark);
+}
+
+@media (max-width: 425px) {
+  .step-instruction {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+}

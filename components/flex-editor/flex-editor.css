@@ -2,6 +2,7 @@
   flex: 0 0 380px;
   display: flex;
   flex-direction: column;
+  align-self: center;
   gap: 2.5rem;
   background: var(--text-light);
   border: 1px solid var(--green-light);
@@ -13,6 +14,7 @@
   .flex-editor {
     order: 2;
     flex: 1 1 auto;
+    align-self: stretch;
   }
 }
 
@@ -26,6 +28,10 @@
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
+}
+
+.flex-editor__car-fields[hidden] {
+  display: none;
 }
 
 .flex-editor__label {

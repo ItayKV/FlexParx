@@ -1,112 +1,122 @@
 /* Road component: the flex container cars are placed in and parked on. */
 
-.road {
-  /* Baseline car size, scaled down on narrower viewports. Car/parking-spot
-     sizes and margins below are all ratios of this so their combined
-     footprint (size + 2*margin) stays equal between the two, keeping
-     parking spots aligned with where their cars should land. */
-  --cell: clamp(48px, 10vw, 100px);
+/* Frame: fills the space left in the road area (like the road used to).
+   road.js scales the fixed-size road to fit inside it; flex centering keeps
+   the scaled road in the middle. */
+.road-frame {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
 
-  position: relative;
-  flex: 1;
-  background: var(--grey-road);
-  border-radius: 8px;
-  border: 1px solid var(--green-dark);
-  min-height: 0;
-  overflow: hidden;
+.road {
+    /* Fixed logical size on every screen, so each step's solution (including
+       where rows wrap) is identical everywhere. A car's footprint is 1.56
+       cells (see below): 6 cars fit in a row and 3 in a column. */
+    --cell: 100px;
+    position: relative;
+    flex-shrink: 0;
+    width: 1000px;
+    height: 560px;
+    transform-origin: center;
+    background: var(--grey-road);
+    border-radius: 8px;
+    border: 1px solid var(--green-dark);
+    overflow: hidden;
+}
+
+/* Stacked layout (editor below the road): the page scrolls here anyway, so
+   size the frame by its width at the road's own proportions instead of
+   squeezing it into the leftover height. */
+@media (max-width: 1024px) {
+    .road-frame {
+        flex: none;
+        aspect-ratio: 1000 / 560;
+    }
 }
 
 .road::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 10px;
-  transform: translateY(-50%);
-  background-image: repeating-linear-gradient(
-    to right,
-    #ffffff 0,
-    #ffffff 40px,
-    transparent 40px,
-    transparent 80px
-  );
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 10px;
+    transform: translateY(-50%);
+    background-image: repeating-linear-gradient(to right, #ffffff 0, #ffffff 40px, transparent 40px, transparent 80px);
 }
 
 /* Two overlapping flex containers filling the road: parking spots sit
    beneath (target layout), cars sit above (player-controlled layout). */
 .road__layer {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  padding: 1rem;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    padding: 1rem;
 }
 
 .road__layer--parking {
-  z-index: 1;
-  height: 100%;
-  width: 100%;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
 }
 
 .road__layer--cars {
-  z-index: 2;
-  height: 100%;
-  width: 100%;
+    z-index: 2;
+    height: 100%;
+    width: 100%;
 }
 
+/* Shared image behavior for cars and parking spots. */
+.car,
 .parking-spot {
-  border-radius: 6px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
 }
 
+/* Footprint: 1.00 + 2 * 0.28 = 1.56 cells */
 .car {
-  width: var(--cell);
-  height: var(--cell);
-  margin: calc(var(--cell) * 0.28);
-  transition: transform 0.3s ease;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: transparent;
+    width: var(--cell);
+    height: var(--cell);
+    margin: calc(var(--cell) * 0.28);
+    transition: transform 0.3s ease;
 }
 
+/* Footprint: 1.16 + 2 * 0.20 = 1.56 cells (matches .car) */
 .parking-spot {
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: transparent;
-  border-color: transparent;
-  width: calc(var(--cell) * 1.16);
-  height: calc(var(--cell) * 1.16);
-  margin: calc(var(--cell) * 0.2);
+    width: calc(var(--cell) * 1.16);
+    height: calc(var(--cell) * 1.16);
+    margin: calc(var(--cell) * 0.2);
+    border-radius: 6px;
 }
 
-.taxi-car {
-    background-image: url('../photos/taxi.png');
-}
-
-.private-car {
+/* Car types - modifier names match the type names used in STEPS. */
+.car--private {
     background-image: url('../photos/private.png');
 }
 
-.truck-car {
+.car--taxi {
+    background-image: url('../photos/taxi.png');
+}
+
+.car--truck {
     background-image: url('../photos/truck.png');
 }
 
-/*top parking*/
-.spot-top {
-    transform: rotate(90deg);
-}
-/*bottom parking*/
-.spot-bottom {
-    transform: rotate(-90deg);
-}
-
-.taxi-spot {
-    background-image: url('../photos/taxiP.png');
-}
-.private-spot {
+.parking-spot--private {
     background-image: url('../photos/privateP.png');
 }
-.truck-spot {
+
+.parking-spot--taxi {
+    background-image: url('../photos/taxiP.png');
+}
+
+.parking-spot--truck {
     background-image: url('../photos/truckP.png');
 }
