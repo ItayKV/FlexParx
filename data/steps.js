@@ -8,7 +8,7 @@ const STEPS = [
   {
   id: 1,
   hint: "justify-content",
-  instruction: "Spread the cars along the road: the first at the start, the last at the end, with equal space between them.",
+  instruction: "Spread the vehicles along the road, and according to the parking rules (by colors).",
   cars: ["private", "taxi", "truck"],
   roadSolution: { "justify-content": "space-between" },
   carTypeSolutions: { private: {}, taxi: {}, truck: {} }
@@ -16,20 +16,20 @@ const STEPS = [
 
 {
   id: 2,
-  hint: "align-items",
-  instruction: "Pull all the cars over to the bottom edge of the road.",
+  hint: "align-items + align-self",
+  instruction: "Park all vehicles over to the bottom edge of the road, but leave the taxis waiting in the middle of the road.",
   cars: ["taxi", "truck", "private", "taxi"],
   roadSolution: {
     "align-items": "flex-end"
   },
-  carTypeSolutions: { private: {}, taxi: {}, truck: {} }
+  carTypeSolutions: { private: {}, taxi: {"align-self": "center"}, truck: {} }
 },
 
 {
     id: 3,
     hint: "justify-content + align-items",
     instruction:
-      "Line the cars up along the middle of the road, with the same gap before the first car, between every two cars, and after the last.",
+      "Line the vehicles up along the middle of the road, with the same gap before the first vehicle, between every two vehicles, and after the last.",
     cars: ["truck", "private", "taxi"],
     roadSolution: {
       "justify-content": "space-evenly",
@@ -44,17 +44,17 @@ const STEPS = [
 
   {
   id: 4,
-  hint: "flex-direction",
-  instruction: "The cars came in from the wrong side. Park them at the other end of the road, in reverse order.",
+  hint: "flex-direction + align-self",
+  instruction: "The vehicles came in from the wrong side. Park them at the other end of the road, in reverse order, and park the truck down to the bottom edge.",
   cars: ["taxi", "private", "truck"],
   roadSolution: { "flex-direction": "row-reverse" },
-  carTypeSolutions: { private: {}, taxi: {}, truck: {} }
+  carTypeSolutions: { private: {}, taxi: {}, truck: { "align-self": "flex-end"} }
 },
 
 {
   id: 5,
   hint: "flex-wrap",
-  instruction: "The row is so crowded that the cars are getting squeezed. Let them keep their size and continue onto a new row below.",
+  instruction: "The row is so crowded that the vehicles are getting squeezed. If you don't want your car to get scratched, let them keep their size and continue onto a new row below.",
   cars: ["private", "taxi", "truck", "taxi", "private", "truck", "taxi", "private"],
   roadSolution: { "flex-wrap": "wrap" },
   carTypeSolutions: { private: {}, taxi: {}, truck: {} }
@@ -63,7 +63,7 @@ const STEPS = [
     id: 6,
     hint: "align-items + flex-wrap",
     instruction:
-      "Nine cars won't fit in one row. Wrap them into two rows, with the first row on top, and pull each row down to the bottom of its half of the road.",
+      "9 vehicles won't fit in one row. Park them in two rows, with the first row on top, and position each row down to the bottom of its half of the road.",
     cars: ["truck", "taxi", "private", "taxi", "truck", "private", "private", "taxi", "truck"],
     roadSolution: {
       "flex-wrap": "wrap",
@@ -77,16 +77,16 @@ const STEPS = [
   },
   {
     id: 7,
-    hint: "flex-direction + justify-content",
+    hint: "flex-direction + justify-content + align-self",
     instruction:
-      "Stack the cars in a single column along the left side of the road, pushed all the way to the bottom, with the first car on top.",
+      "Park the vehicles in a single column along the left side of the road, pushed all the way to the bottom. The private car has to park in the middle of the road instead, at the same height as the rest of its column.",
     cars: ["private", "truck", "taxi"],
     roadSolution: {
       "flex-direction": "column",
       "justify-content": "flex-end"
     },
     carTypeSolutions: {
-      private: {},
+      private: {"align-self": "center"},
       taxi: {},
       truck: {}
     }
@@ -95,7 +95,7 @@ const STEPS = [
     id: 8,
     hint: "align-items + flex-direction + flex-wrap",
     instruction:
-      "Park the cars top to bottom in columns, starting a new column to the right whenever one fills up. The road splits into equal strips, one per column: push each column to the right edge of its strip.",
+      "Park the cars top to bottom in columns, starting a new column to the right whenever one fills up.",
     cars: ["taxi", "private", "truck", "private", "truck", "taxi", "private"],
     roadSolution: {
       "flex-direction": "column",
