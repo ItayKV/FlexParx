@@ -144,20 +144,12 @@ function renderContainerField() {
     (props) => Road.applyContainerProps(props)
   );
 }
-
-/*Check if Car props are needed */
-function stepUsesCarProps(step) {
-  return Object.values(step.carTypeSolutions).some(
-    (props) => Object.keys(props).length > 0
-  );
-}
 function renderCarTypeFields(step) {
   const wrapper = document.getElementById("car-type-fields");
   wrapper.innerHTML = "";
   Object.keys(carSections).forEach((type) => delete carSections[type]);
 
-  const types = stepUsesCarProps(step) ? Array.from(new Set(step.cars)) : [];
-  wrapper.hidden = types.length === 0;
+  const types = Array.from(new Set(step.cars));
   types.forEach((type) => {
     const field = document.createElement("div");
     field.className = "flex-editor__field";

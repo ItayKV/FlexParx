@@ -5,62 +5,56 @@
 // via its button, a click outside it, or Escape).
 
 const MISMATCH_FINE_PER_PROP = 10;
-
-function buildDefaults(attributes) {
-  const defaults = {};
-  attributes.forEach((attr) => {
-    defaults[attr.prop] = String(attr.default);
-  });
-  return defaults;
-}
+const POSITION_TOLERANCE_PX = 1;
 
 const CONTAINER_DEFAULTS = buildDefaults(FlexAttributes.container);
 const ITEM_DEFAULTS = buildDefaults(FlexAttributes.item);
 
 // Some values are aliases of each other (e.g. "start"/"flex-start") - map
 // to a canonical form before comparing so alias pairs count as equal.
-function canonicalValue(value) {
-  return FlexAttributes.valueAliases[value] || value;
+
+
+
+function layoutCenter(element) {
+  return {
+    x: element.offsetLeft + element.offsetWidth / 2,
+    y: element.offsetTop + element.offsetHeight / 2
+  };
 }
 
-function countMismatches(actual, expected, defaults) {
-  const actualKeys = new Set(Object.keys(actual));
-  const expectedKeys = new Set(Object.keys(expected));
-
-  const sharedKeys = [...actualKeys].filter((key) => expectedKeys.has(key));
-  const missingKeys = [...expectedKeys].filter((key) => !actualKeys.has(key));
-  const extraKeys = [...actualKeys].filter((key) => !expectedKeys.has(key));
-
-  const sharedMismatches = sharedKeys.filter(
-    (key) => canonicalValue(actual[key]) !== canonicalValue(expected[key])
-  ).length;
-  const extraMismatches = extraKeys.filter(
-    (key) => canonicalValue(actual[key]) !== canonicalValue(defaults[key])
-  ).length;
-
-  return sharedMismatches + missingKeys.length + extraMismatches;
+function isSamePosition(a, b) {
+  return (
+    Math.abs(a.x - b.x) <= POSITION_TOLERANCE_PX &&
+    Math.abs(a.y - b.y) <= POSITION_TOLERANCE_PX
+  );
 }
 
-function computeMismatchFine(step) {
-  const containerMismatches = countMismatches(
-    FlexEditor.getContainerProps(),
-    step.roadSolution,
-    CONTAINER_DEFAULTS
-  );
+function countMisparkedCars(step) {
+  const cars = document.querySelectorAll("#road-cars .car");
+  const spots = Array.from(document.querySelectorAll("#road-parking .parking-spot"));
+  const freeSpotIndexes = new Set(spots.keys());
+  let misparked = 0;
+ 
+  cars.forEach((car, carIndex) => {
+    const carCenter = layoutCenter(car);
+    const spotIndex = [...freeSpotIndexes].find(
+      (i) =>
+        step.cars[i] === step.cars[carIndex] &&
+        isSamePosition(carCenter, layoutCenter(spots[i]))
+    );
+ 
+    if (spotIndex === undefined) {
+      misparked += 1;
+    } else {
+      freeSpotIndexes.delete(spotIndex);
+    }
+  });
+ 
+  return misparked;
+}
 
-  const types = Array.from(new Set(step.cars));
-  const carMismatches = types.reduce(
-    (sum, type) =>
-      sum +
-      countMismatches(
-        FlexEditor.getCarProps(type),
-        step.carTypeSolutions[type] || {},
-        ITEM_DEFAULTS
-      ),
-    0
-  );
-
-  return (containerMismatches + carMismatches) * MISMATCH_FINE_PER_PROP;
+function computeFine(step) {
+  return countMisparkedCars(step) * MISPARKED_FINE_PER_CAR;
 }
 
 function updateTotalDisplay(total) {
