@@ -8,11 +8,9 @@
   border: 1px solid var(--green-light);
   border-left: 4px solid var(--green-mid);
   border-radius: 8px;
-  gap: 0.6rem 1rem;
 }
 
 .step-instruction__concept {
-  flex-shrink: 0;
   padding: 0.25rem 0.6rem;
   font-family: "Consolas", "Courier New", monospace;
   font-size: 0.8rem;
@@ -26,12 +24,4 @@
   line-height: 1.5;
   color: var(--text-dark);
   flex: 1 1 20rem;
-}
-
-@media (max-width: 425px) {
-  .step-instruction {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.6rem;
-  }
 }
