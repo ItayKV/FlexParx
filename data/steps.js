@@ -8,7 +8,7 @@ const STEPS = [
   {
   id: 1,
   hint: "justify-content",
-  instruction: "Spread the vehicles along the road, and according to the parking rules (by colors).",
+  instruction: "Spread the vehicles along the road, first vehicle at the start of the road, last one at the end, equal gaps between them.",
   cars: ["private", "taxi", "truck"],
   roadSolution: { "justify-content": "space-between" },
   carTypeSolutions: { private: {}, taxi: {}, truck: {} }
@@ -95,7 +95,7 @@ const STEPS = [
     id: 8,
     hint: "align-items + flex-direction + flex-wrap",
     instruction:
-      "Park the cars top to bottom in columns, starting a new column to the right whenever one fills up.",
+      "Park the cars top to bottom in columns, starting a new column to the right whenever one fills up, and push each car to the right edge of its column",
     cars: ["taxi", "private", "truck", "private", "truck", "taxi", "private"],
     roadSolution: {
       "flex-direction": "column",

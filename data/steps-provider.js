@@ -2,10 +2,10 @@
 // bounds-checked), and lets other components subscribe to be notified
 // whenever the current step changes.
 window.StepsProvider = (function () {
-  const firstUnrecordedIndex = STEPS.findIndex(
-    (step) => !Scores.hasRecord(step.id)
+  const firstUnsolvedIndex = STEPS.findIndex(
+    (step) => !Scores.isSolved(step.id)
   );
-  let index = firstUnrecordedIndex === -1 ? STEPS.length - 1 : firstUnrecordedIndex;
+  let index = firstUnsolvedIndex === -1 ? STEPS.length - 1 : firstUnsolvedIndex;
   const subscribers = [];
 
   function notify() {

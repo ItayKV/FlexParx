@@ -4,79 +4,87 @@ A browser game that teaches CSS Flexbox by having the player park cars. Vanilla 
 
 ## Concept
 
-Each level shows a set of cars sitting on a "road" (a flex container) and a matching set of parking spots. The player edits flex properties (via UI controls, not raw code — see Open Questions) applied to the road container and/or to individual car types. As values change, the cars re-flow live. The level is solved when every car's position/order matches its designated parking spot.
+Each step shows a set of vehicles sitting on a "road" (a flex container) and a matching set of parking spots. The player adds flex properties through UI controls (selects and number inputs) to the road container and/or to individual vehicle types. As values change, the vehicles re-flow live with a move animation. The step is solved when every vehicle sits on a parking spot of its own type.
 
-This is conceptually similar to Flexbox Froggy / Flexbox Zombies, but themed around cars, parking, and multiple car types with independent per-type properties.
+Similar in spirit to Flexbox Froggy, but themed around vehicles and parking, with independent per-type properties.
 
 ## Visual Design
 
-- **Toolbar**: fixed top bar with the site name "FlexParx" as the logo/title.
-- **Color palette**: green, across the whole site (toolbar, buttons, accents, backgrounds). Exact shades TBD — establish a small palette (e.g. dark green for toolbar, mid green for accents/CTAs, light green/off-white for page background) and define as CSS variables.
-- **Main view**: primary layout area, right side holds a large "road" panel:
-  - Road background: dark grey.
-  - Road is the flex container for the cars.
-  - Parking spots are rendered on/along the road and are visually marked with their designated position/label so the player can see the target layout.
-  - Each parking spot is color-coded to match the car type designated for it (red/yellow/green per the car types table below), using a brighter/lighter tint of that type's color so it reads as a "target" against the dark grey road rather than as a car itself.
-- Left side (or elsewhere in main view) is reserved for level info and the flex-property controls (exact placement TBD — see Open Questions).
+- **Toolbar**: top bar with the site name "FlexParx".
+- **Color palette**: green across the site, defined as CSS variables in `shared/base.css` (`--green-darkest` … `--green-lightest`, `--grey-road`, text colors).
+- **Main view**:
+  - Desktop (wider than 1024px): the flex editor on the left (fixed 380px, scrolls internally when it has many rows), the road area on the right.
+  - Up to 1024px: the road area on top and the flex editor below it; the whole page scrolls.
+- **Road area** (top to bottom): step nav, step instruction, the road, level actions (total fines, Reset, Submit).
+- **Road**: dark grey, fixed logical size of 1000×560px on every screen so each step's solution (including where rows/columns wrap) is identical everywhere. `road.js` scales it visually (CSS `transform: scale`) to fit its frame; the transform doesn't affect the flex layout inside it.
+- **Vehicles and parking spots** are images in `components/photos/` (`private.png`, `taxi.png`, `truck.png` and the matching `privateP.png`, `taxiP.png`, `truckP.png`). Every vehicle and every spot has the same footprint (1.56 cells of 100px, including margins), so 6 fit in a row and 3 in a column.
 
 ## Core Data Model
 
-### Car types
-There are exactly **3 car types**, distinguished by color:
+### Vehicle types
+There are exactly **3 vehicle types**:
 
-| Type  | Color  |
-|-------|--------|
-| car   | red    |
-| taxi  | yellow |
-| truck | green  |
+| Type    | Image                  |
+|---------|------------------------|
+| private | blue car               |
+| taxi    | yellow taxi            |
+| truck   | green truck            |
 
-Each car type has its own settable `align-self` value, independent of the other types. (Item-level properties are limited to `align-self` — see below.)
+Each type has its own set of item-level properties, independent of the other types. All vehicles of the same type always share the same values.
 
-### Step object
-Steps (levels) live in `steps.js` as the `STEPS` array. A step defines:
-- **`cars`**: a flat list of car type names, e.g. `["car", "truck", "taxi"]`. List order *is* the starting order of the cars on the road (DOM order), before the player changes anything.
-- **`hint`**: names the flex concept this step is teaching (e.g. `"flex-direction"`). Not yet used in the UI — reserved for future hint display.
-- The **road**: a flex container. It needs no explicit initial state — it starts as plain `display: flex` with default flex behavior (`flex-direction: row`, `align-items: stretch`, etc.) until the player changes it.
-- **`roadSolution`**: a string-to-string map of CSS property name -> CSS value, applied directly to the road container, e.g. `{ "flex-direction": "column" }`. Keys are real CSS property names (kebab-case), not camelCase, so they can be applied via `style.setProperty` without translation.
-- **`carTypeSolutions`**: an object mapping each car type (`car`, `taxi`, `truck`) to its own string-to-string CSS property map (same shape as `roadSolution`), applied to that car type's elements. Defaults to an empty object per type when a step doesn't test item-level properties.
-- The **parking spots**: designated end positions rendered on the road representing where each car must end up. Applying `roadSolution` (road) and `carTypeSolutions` (per car type) should cause the cars to visually land on these parking spots.
+### Editable properties (`data/flex-attributes.js`)
+`FlexAttributes` is a config list that drives the flex editor. Each entry is either a `select` (fixed CSS keywords) or a `number` attribute.
+- **Container (road)**: `flex-direction`, `flex-wrap`, `justify-content`, `align-items`, `align-content`.
+- **Item (per vehicle type)**: `align-self`, `order`, `flex-grow`, `flex-shrink`.
 
-Suggested shape (illustrative, not final):
+The player adds an attribute via the "+ Add Attribute" select and removes it with the trash button. Removing an attribute returns it to the CSS default.
+
+### Step object (`data/steps.js`)
+Steps live in the `STEPS` array (currently 8 steps). A step defines:
+- **`id`**: unique number, also the key for saved scores.
+- **`hint`**: the flex concept(s) the step practices, e.g. `"align-items + flex-wrap"`. Shown as a tag next to the instruction.
+- **`instruction`**: the task text shown to the player. Must describe the full solution layout.
+- **`cars`**: flat list of vehicle type names, e.g. `["private", "truck", "taxi"]`. List order is the starting (DOM) order of the vehicles and of the parking spots.
+- **`roadSolution`**: map of CSS property name -> value applied to the parking layer, e.g. `{ "flex-direction": "column" }`. Keys are real kebab-case CSS names, applied via `style.setProperty`.
+- **`carTypeSolutions`**: `{ private, taxi, truck }`, each the same shape as `roadSolution`, applied to that type's parking spots.
+
+The road starts as plain `display: flex` with default values until the player changes something.
 
 ```js
-const STEPS = [
-  {
-    id: 1,
-    hint: "flex-direction",
-    cars: ["car", "truck", "taxi"],
-    roadSolution: {
-      "flex-direction": "column"
-    },
-    carTypeSolutions: {
-      car: {},
-      taxi: {},
-      truck: {}
-    }
-  }
-];
+{
+  id: 1,
+  hint: "justify-content",
+  instruction: "Spread the vehicles along the road...",
+  cars: ["private", "taxi", "truck"],
+  roadSolution: { "justify-content": "space-between" },
+  carTypeSolutions: { private: {}, taxi: {}, truck: {} }
+}
 ```
 
-## Win Condition
+### Road layers
+The road holds two overlapping flex containers of the same size: `#road-parking` (the target layout, built by applying the step's solution to the spots) underneath, and `#road-cars` (the player's layout) on top.
 
-A level is complete when the live computed layout (car positions, based on current flex values applied to the road and car types) matches the level's solution layout — i.e. every car sits in its designated parking spot.
+## Win Condition and Scoring
+
+On Submit, `level-actions.js` compares positions, not property values, so any combination of properties that parks the vehicles correctly is accepted:
+- Each vehicle's center (from `offsetLeft`/`offsetTop`, unaffected by the scale transform or the move animation) must match the center of a free parking spot of the same type, within 1px.
+- Every vehicle that isn't parked correctly adds a $10 fine. A fine of $0 means the step is solved.
+- A popup shows the result (success or error), the attempt's fine, the best fine for the step and the total. It closes with its OK button, a click on the backdrop, or Escape.
+
+`data/scores.js` stores the best (lowest) fine per step in `localStorage`. The total shown is the sum of the best fines.
+
+## Navigation and Persistence
+
+- `data/steps-provider.js` (`StepsProvider`) owns the current step index, Previous/Next navigation and a subscribe mechanism that notifies components when the step changes. Steps change without reloading the page.
+- On load, the game opens at the first step that hasn't been solved yet (or the last step if all are solved).
+- The step nav shows "Step X / Y". Previous/Next are always available within bounds, so the player can return to completed steps.
+- Reset clears every editor field and every applied style back to the step's starting state.
 
 ## Tech Constraints
 
-- Plain HTML/CSS/JS only. No frameworks, no bundlers, no npm dependencies, no server/backend of any kind.
-- Static site: must run by directly opening `index.html` in a browser (double-click / `file://`). No dev server, no build step, no install step.
-- Structure: component-based, split across `shared/` (base CSS: variables, reset, page layout shell), `components/<name>/` (each with its own `.css` and, where it has behavior, a `.js` file — e.g. `components/road/road.js`, `components/flex-editor/flex-editor.js`), and `data/steps.js` (the `STEPS` array). No build step: components communicate via plain namespaced globals (e.g. `window.Road`), not ES modules — `<script>`/`<link>` tags in `index.html` wire everything together, ordered so shared CSS vars and `STEPS` load before anything that depends on them. HTML structure itself stays inline in `index.html` per component (marked with `<!-- Component: X -->` comments) since there's no templating/include mechanism available under `file://`.
-
-## Open Questions / To Be Directed
-
-- How does the player actually change flex values — dropdowns/sliders per property, a code-like input, or preset buttons? Which properties are exposed per level (could vary by level for progressive difficulty)?
-- How is "reaching" a parking spot detected — exact CSS value match against the solution, or geometric match (comparing rendered bounding boxes/positions)?
-- Is there a level-select screen, or linear progression? How many levels total, and how is difficulty ramped?
-- Feedback/scoring: hints, error states, success animation, timer, move counter?
-- Do individual cars within the same type ever need different solutions, or is the solution always uniform per type?
-- Persistence: save progress (e.g. `localStorage`) across sessions?
-- Responsive/mobile behavior for the road + controls layout?
+- Plain HTML/CSS/JS only. No frameworks, no bundlers, no npm dependencies, no backend. No CSS Grid for the game itself.
+- Static site: runs by opening `index.html` directly (`file://`) and on GitHub Pages.
+- Structure: `shared/` (base CSS), `components/<name>/` (each with its own `.css` and, where it has behavior, `.js`), `components/photos/` (images), and `data/` (`steps.js`, `flex-attributes.js`, `scores.js`, `steps-provider.js`).
+- Every JS file is wrapped in an IIFE. Components communicate only through the namespaced globals they expose (`window.Road`, `window.FlexEditor`, `window.Scores`, `window.StepsProvider`, plus `STEPS` and `FlexAttributes`), not ES modules.
+- `<script>` tags in `index.html` are ordered so the data files load before the components that depend on them.
+- HTML structure stays inline in `index.html` per component, marked with `<!-- Component: X -->` comments.
