@@ -17,7 +17,7 @@ Similar in spirit to Flexbox Froggy, but themed around vehicles and parking, wit
   - Up to 1024px: the road area on top and the flex editor below it; the whole page scrolls.
 - **Road area** (top to bottom): step nav, step instruction, the road, level actions (total fines, Reset, Submit).
 - **Road**: dark grey, fixed logical size of 1000×560px on every screen so each step's solution (including where rows/columns wrap) is identical everywhere. `road.js` scales it visually (CSS `transform: scale`) to fit its frame; the transform doesn't affect the flex layout inside it.
-- **Vehicles and parking spots** are images in `components/photos/` (`private.png`, `taxi.png`, `truck.png` and the matching `privateP.png`, `taxiP.png`, `truckP.png`). Every vehicle and every spot has the same footprint (1.56 cells of 100px, including margins), so 6 fit in a row and 3 in a column.
+- **Vehicles and parking spots** are images in `data/photos/` (`private.png`, `taxi.png`, `truck.png` and the matching `privateP.png`, `taxiP.png`, `truckP.png`). Every vehicle and every spot has the same footprint (1.56 cells of 100px, including margins), so 6 fit in a row and 3 in a column.
 
 ## Core Data Model
 
@@ -84,7 +84,7 @@ On Submit, `level-actions.js` compares positions, not property values, so any co
 
 - Plain HTML/CSS/JS only. No frameworks, no bundlers, no npm dependencies, no backend. No CSS Grid for the game itself.
 - Static site: runs by opening `index.html` directly (`file://`) and on GitHub Pages.
-- Structure: `shared/` (base CSS), `components/<name>/` (each with its own `.css` and, where it has behavior, `.js`), `components/photos/` (images), and `data/` (`steps.js`, `flex-attributes.js`, `scores.js`, `steps-provider.js`).
+- Structure: `shared/` (base CSS), `components/<name>/` (each with its own `.css` and, where it has behavior, `.js`), and `data/` (`steps.js`, `flex-attributes.js`, `scores.js`, `steps-provider.js`, `photos/` for images).
 - Every JS file is wrapped in an IIFE. Components communicate only through the namespaced globals they expose (`window.Road`, `window.FlexEditor`, `window.Scores`, `window.StepsProvider`, plus `STEPS` and `FlexAttributes`), not ES modules.
 - `<script>` tags in `index.html` are ordered so the data files load before the components that depend on them.
 - HTML structure stays inline in `index.html` per component, marked with `<!-- Component: X -->` comments.
