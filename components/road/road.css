@@ -98,25 +98,25 @@
 
 /* Car types - modifier names match the type names used in STEPS. */
 .car--private {
-    background-image: url('../photos/private.png');
+    background-image: url('../../data/photos/private.png');
 }
 
 .car--taxi {
-    background-image: url('../photos/taxi.png');
+    background-image: url('../../data/photos/taxi.png');
 }
 
 .car--truck {
-    background-image: url('../photos/truck.png');
+    background-image: url('../../data/photos/truck.png');
 }
 
 .parking-spot--private {
-    background-image: url('../photos/privateP.png');
+    background-image: url('../../data/photos/privateP.png');
 }
 
 .parking-spot--taxi {
-    background-image: url('../photos/taxiP.png');
+    background-image: url('../../data/photos/taxiP.png');
 }
 
 .parking-spot--truck {
-    background-image: url('../photos/truckP.png');
+    background-image: url('../../data/photos/truckP.png');
 }
