@@ -25,6 +25,10 @@ window.Scores = (function () {
   return loadBestFines()[String(stepId)] === 0;
   }
 
+  function hasBestFine(stepId) {
+    return String(stepId) in loadBestFines();
+  }
+
   function recordAttempt(stepId, fine) {
     const bestFines = loadBestFines();
     const key = String(stepId);
@@ -37,5 +41,5 @@ window.Scores = (function () {
     return { bestForStep: bestFines[key], total: getTotalFine(bestFines) };
   }
 
-  return { loadBestFines, getTotalFine, isSolved, recordAttempt };
+  return { loadBestFines, getTotalFine, isSolved, hasBestFine, recordAttempt };
 })();
