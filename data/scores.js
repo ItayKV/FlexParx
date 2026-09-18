@@ -1,6 +1,6 @@
 // Scores: persists the best (lowest) fine recorded per step in
 // localStorage. Shared by StepsProvider (to resume at the first
-// never-submitted step) and Level Actions (to compute/display fines).
+// unsolved step) and Level Actions (to compute/display fines).
 window.Scores = (function () {
   const BEST_FINES_KEY = "flexparx-best-fines";
 
@@ -21,8 +21,8 @@ window.Scores = (function () {
     return Object.values(bestFines).reduce((sum, fine) => sum + fine, 0);
   }
 
-  function hasRecord(stepId) {
-    return String(stepId) in loadBestFines();
+  function isSolved(stepId) {
+  return loadBestFines()[String(stepId)] === 0;
   }
 
   function recordAttempt(stepId, fine) {
@@ -37,5 +37,5 @@ window.Scores = (function () {
     return { bestForStep: bestFines[key], total: getTotalFine(bestFines) };
   }
 
-  return { loadBestFines, getTotalFine, hasRecord, recordAttempt };
+  return { loadBestFines, getTotalFine, isSolved, recordAttempt };
 })();
