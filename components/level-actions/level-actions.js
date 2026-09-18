@@ -107,6 +107,7 @@
     const message = solved ? "Parked! Level solved." : "Not quite - keep adjusting.";
     showPopup(message, solved, attemptFine, bestForStep, total);
     updateTotalDisplay(total);
+    document.dispatchEvent(new Event("flexparx:scores-updated"));
   }
 
   document.addEventListener("DOMContentLoaded", () => {
